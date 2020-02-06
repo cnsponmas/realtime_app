@@ -46,6 +46,9 @@ class OverSeasWidget extends StatelessWidget {
   }
 
   Widget _buildAreaTitle() {
+    if(this.data == null || this.data['over_data'] == null) {
+      return Container();
+    }
     return Padding(
       padding: const EdgeInsets.only(top: 5),
       child: Row(
@@ -130,43 +133,6 @@ class OverSeasWidget extends StatelessWidget {
 
   Widget _buildAreaItem(AreaModel data) {
     return AreaItemWidget(model: data);
-//    return Container(
-//      margin: EdgeInsets.only(bottom: 10),
-//      color: Colors.white,
-//      child: SMExpansionTile(
-//        title: Container(
-//            height: 40,
-//            child: Row(
-//              children: <Widget>[
-//                SizedBox(width: 5,),
-//                Text(data.provinceName.toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-//                Expanded(child: Container()),
-//                _buildContent('${data.confirmedCount.toString()}','确诊'),
-//                _buildContent('${data.curedCount.toString()}','治愈'),
-//                _buildContent('${data.deadCount.toString()}','死亡'),
-//              ],
-//            )
-//        ),
-//        trailing: Container(width: 10,),
-//        onExpansionChanged: (bool) {
-//
-//        },
-//      ),
-//    );
   }
 
-
-  Widget _buildContent(String content, String title) {
-    return Container(
-        padding: EdgeInsets.only(right: 10),
-//        width: 60,
-        child: Row(
-          children: <Widget>[
-            Text(title, style: TextStyle(color: Colors.blueGrey),),
-            SizedBox(width: 2,),
-            Text(content, style: TextStyle(color: Colors.black87,fontSize: 16),)
-          ],
-        )
-    );
-  }
 }

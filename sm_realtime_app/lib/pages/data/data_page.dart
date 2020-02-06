@@ -19,7 +19,7 @@ class DataPage extends StatelessWidget {
       stream: dataBLoC.outDataList,
       builder: (BuildContext context, AsyncSnapshot<Map>snapshot) {
         _refreshController.refreshCompleted();
-
+        Map data = snapshot.data;
         return Container(
 //          color: Colors.white,
           child: SmartRefresher(
@@ -33,11 +33,11 @@ class DataPage extends StatelessWidget {
               child: ListView(
                 children: <Widget>[
                   _buildHeader(snapshot.data),
-//                _buildMap(),
-                  _buildChart(snapshot.data, '全国确诊和疑似趋势图', SMChartType.data),
-                  _buildChart(snapshot.data, '全国治愈和死亡趋势图', SMChartType.out),
-                  AreaWidget(data: snapshot.data),
-                  OverSeasWidget(data: snapshot.data,),
+                  _buildMap(data),
+                  _buildChart(data, '全国确诊和疑似趋势图', SMChartType.data),
+                  _buildChart(data, '全国治愈和死亡趋势图', SMChartType.out),
+                  AreaWidget(data: data),
+                  OverSeasWidget(data: data,),
                 ],
               ),
           ),
@@ -46,8 +46,15 @@ class DataPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMap() {
-    return MapWidget();
+  Widget _buildMap(Map data) {
+    if(data == null) {
+      return Container();
+    }
+    List list = data['area_data'];
+    if(list == null) {
+      return Container();
+    }
+    return MapWidget(models: list,);
   }
 
   Widget _buildHeader(Map data) {

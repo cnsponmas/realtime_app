@@ -50,7 +50,7 @@ class _AreaItemWidgetState extends State<AreaItemWidget> {
                             ),
                             Expanded(
                               child: Text(
-                                data.provinceName,
+                                data.provinceShortName,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -261,41 +261,6 @@ class _AreaItemWidgetState extends State<AreaItemWidget> {
         ],
       ),
     );
-    return Container(
-      child: Container(
-        margin: EdgeInsets.only(left: 10,right: 10, bottom: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Divider(height: 0.3,),
-            SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: 100,
-                  child: Center(child: Text(model.cityName,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15))),
-                ),
-                Container(
-                  width: 50,
-//            padding: EdgeInsets.only(left: 20),
-                  child: Center(child: Text(model.confirmedCount.toString(),style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15))),
-                ),
-                Container(
-                  width: 50,
-//            padding: EdgeInsets.only(left: 20),
-                  child: Center(child: Text(model.curedCount.toString(),style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15))),
-                ),
-                Container(
-                  width: 50,
-//            padding: EdgeInsets.only(left: 20),
-                  child: Center(child: Text(model.deadCount.toString(),style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15))),
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+
   }
 }

@@ -25,52 +25,62 @@
 
 </div>
 <script type="text/javascript">
+        var mapData = {};
         var dataList=[
             {name:"南海诸岛",value:0,comfirm: '确诊', cvalue:randomValue()},
-            {name: '北京', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '天津', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '上海', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '重庆', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '河北', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '河南', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '云南', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '辽宁', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '黑龙江', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '湖南', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '安徽', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '山东', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '新疆', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '江苏', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '浙江', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '江西', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '湖北', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '广西', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '甘肃', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '山西', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '内蒙古', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '陕西', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '吉林', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '福建', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '贵州', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '广东', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '青海', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '西藏', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '四川', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '宁夏', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '海南', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '台湾', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '香港', value: randomValue(),comfirm: '确诊', cvalue:randomValue()},
-            {name: '澳门', value: randomValue(),comfirm: '确诊', cvalue:randomValue()}
+            {name: '北京', value: randomValue('北京'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '天津', value: randomValue('天津'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '上海', value: randomValue('上海'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '重庆', value: randomValue('上海'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '河北', value: randomValue('河北'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '河南', value: randomValue('河南'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '云南', value: randomValue('云南'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '辽宁', value: randomValue('辽宁'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '黑龙江', value: randomValue('黑龙江'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '湖南', value: randomValue('湖南'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '安徽', value: randomValue('安徽'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '山东', value: randomValue('山东'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '新疆', value: randomValue('新疆'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '江苏', value: randomValue('江苏'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '浙江', value: randomValue('浙江'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '江西', value: randomValue('江西'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '湖北', value: randomValue('湖北'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '广西', value: randomValue('广西'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '甘肃', value: randomValue('甘肃'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '山西', value: randomValue('山西'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '内蒙古', value: randomValue('内蒙古'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '陕西', value: randomValue('陕西'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '吉林', value: randomValue('吉林'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '福建', value: randomValue('福建'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '贵州', value: randomValue('贵州'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '广东', value: randomValue('广东'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '青海', value: randomValue('青海'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '西藏', value: randomValue('西藏'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '四川', value: randomValue('四川'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '宁夏', value: randomValue('宁夏'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '海南', value: randomValue('海南'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '台湾', value: randomValue('台湾'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '香港', value: randomValue('香港'),comfirm: '确诊', cvalue:randomValue()},
+            {name: '澳门', value: randomValue('澳门'),comfirm: '确诊', cvalue:randomValue()}
         ]
         var myChart = echarts.init(document.getElementById('main'));
-        function randomValue() {
-            return Math.round(Math.random()*1000);
+        function randomValue(name) {
+            let map = mapData[name];
+            if(map != null) {
+                return map.confirmedCount
+            }
+            return 0;
         }
+        function confirmValue(name) {
+
+        }
+        function flutterCallJsMethod(message) {
+            mapData = JSON.parse(message);
+           }
         option = {
             tooltip: {
                     formatter:function(params,ticket, callback){
-                        console.log(params)
-                        return params.name+'<br />'+params.data.comfirm+'：'+params.data.cvalue
+                        return params.name+'<br />'+params.data.comfirm+'：'+params.data.value
                     }//数据格式化
                 },
             visualMap: {

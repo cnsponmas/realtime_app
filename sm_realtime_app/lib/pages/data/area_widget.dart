@@ -48,6 +48,9 @@ class AreaWidget extends StatelessWidget {
   }
 
   Widget _buildAreaTitle() {
+    if(this.data == null || this.data['area_data'] == null) {
+      return Container();
+    }
     return Padding(
       padding: const EdgeInsets.only(top: 2),
       child: Row(
