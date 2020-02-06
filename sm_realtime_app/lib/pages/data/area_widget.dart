@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sm_realtime_app/model/area_model.dart';
-import 'package:sm_realtime_app/widgets/expansion/sm_expansion_tile.dart';
+import 'area_item_widget.dart';
 
 class AreaWidget extends StatelessWidget {
   final Map data;
@@ -13,6 +13,7 @@ class AreaWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildAreaHeader(this.data),
+        _buildAreaTitle(),
         _buildArea(this.data),
       ],
     );
@@ -23,7 +24,7 @@ class AreaWidget extends StatelessWidget {
       return Container();
     }
     return Container(
-        padding: EdgeInsets.only(left: 10,top: 10,bottom: 5),
+        padding: EdgeInsets.only(left: 10,top: 20,bottom: 5),
         child: Text('全国疫情数据',style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold)));
   }
 
@@ -48,150 +49,89 @@ class AreaWidget extends StatelessWidget {
 
   Widget _buildAreaTitle() {
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 2),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          SizedBox(width: 25,),
-          Text('地区', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-          Expanded(child: Container()),
-          Container(
-              width: 60,
-              child:
-              Text('确诊',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold))),
-          Container(
-            width: 60,
-            child: Text('治愈',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,)),),
-          Container(
-            width: 60,
-            child: Text('死亡',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,)),),
+          Padding(
+            padding: EdgeInsets.only(left: 2),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "地区",
+                    style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+            flex: 1,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 2),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "确诊",
+                    style: TextStyle(color: Colors.yellow[900], fontSize: 16, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+            flex: 1,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 2),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "治愈",
+                    style: TextStyle(color:  Colors.greenAccent[400], fontSize: 16, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+            flex: 1,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 2),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "死亡",
+                    style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+            flex: 1,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 2),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildAreaItem(AreaModel data) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      color: Colors.white,
-      child: SMExpansionTile(
-          title: Container(
-              height: 40,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(width: 5,),
-                  Text(data.provinceName.toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                  Expanded(child: Container()),
-                  _buildContent('${data.confirmedCount.toString()}','确诊'),
-                  _buildContent('${data.curedCount.toString()}','治愈'),
-                  _buildContent('${data.deadCount.toString()}','死亡'),
-                ],
-              )
-          ),
-        children: _buildCites(data.cities),
-      ),
-    );
+    return AreaItemWidget(model: data);
+
   }
-  
-  Widget _buildContent(String content, String title) {
-    return Container(
-      padding: EdgeInsets.only(right: 10),
-//        width: 60,
-        child: Row(
-          children: <Widget>[
-          Text(title, style: TextStyle(color: Colors.blueGrey),),
-          SizedBox(width: 2,),
-          Text(content, style: TextStyle(color: Colors.black87,fontSize: 16),)
-          ],
-        )
-    );
-  }
-
-  List<Widget> _buildCites(List list) {
-    List<Widget> cityCells = List();
-    cityCells.add(_buildCityHeader());
-    list.forEach((item) {
-      Widget cell = _buildCityItem(item);
-      cityCells.add(cell);
-    });
-    return cityCells;
-  }
-
-  Widget _buildCityHeader() {
-    return Container(
-      margin: EdgeInsets.only(left: 10,right: 10, bottom: 10),
-
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-        children: <Widget>[
-          Container(
-            width: 100,
-            child: Center(child: Text('地区', style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),)),
-          ),
-          Container(
-            width: 60,
-            child: Center(child: Text('确诊', style: TextStyle(color: Colors.yellow[900], fontSize: 16, fontWeight: FontWeight.bold),)),
-          ),
-          Container(
-            width: 60,
-            child: Center(child: Text('治愈', style: TextStyle(color: Colors.greenAccent[400], fontSize: 16, fontWeight: FontWeight.bold),)),
-          ),
-          Container(
-            width: 60,
-            child: Center(child: Text('死亡', style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCityItem(CityDataModel model) {
-    return Container(
-      child: Container(
-        margin: EdgeInsets.only(left: 10,right: 10, bottom: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Divider(height: 0.3,),
-            SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: 100,
-                  child: Center(child: Text(model.cityName,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15))),
-                ),
-                Container(
-                  width: 50,
-//            padding: EdgeInsets.only(left: 20),
-                  child: Center(child: Text(model.confirmedCount.toString(),style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15))),
-                ),
-                Container(
-                  width: 50,
-//            padding: EdgeInsets.only(left: 20),
-                  child: Center(child: Text(model.curedCount.toString(),style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15))),
-                ),
-                Container(
-                  width: 50,
-//            padding: EdgeInsets.only(left: 20),
-                  child: Center(child: Text(model.deadCount.toString(),style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15))),
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-
 }
