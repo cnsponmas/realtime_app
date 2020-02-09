@@ -26,12 +26,12 @@ class RootPage extends StatelessWidget {
       selectIcon: LoadImage('assets/images/bottom_rumor.png',true),
       page: BLoCProvider(child: RumorsPage(), bloc: RumorsBLoC()),
     ),
-//    SMTabItem(
-//      title: '防护合辑',
-//      icon: LoadImage('assets/images/bottom_protect.png',false),
-//      selectIcon: LoadImage('assets/images/bottom_protect.png',true),
-//      page: BLoCProvider(child: HomePage(), bloc: HomeBLoC()),
-//    ),
+    SMTabItem(
+      title: '知识',
+      icon: LoadImage('assets/images/bottom_protect.png',false),
+      selectIcon: LoadImage('assets/images/bottom_protect.png',true),
+      page: ProtectPage(),
+    ),
 //    SMTabItem(
 //      title: '疾病知识',
 //      icon: LoadImage('assets/images/bottom_lore.png',false),

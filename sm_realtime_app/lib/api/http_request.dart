@@ -227,3 +227,96 @@ class LABHttpRequest {
     }
   }
 }
+
+class BaseRequest {
+  static BaseRequest _baseRequest = BaseRequest();
+
+  static request(HttpMethod method, String host, String path, Map<String, String> params) async {
+    if(method == HttpMethod.POST) {
+      return await _baseRequest._requestForPost(host, path, params);
+    }else {
+      return await _baseRequest._requestForGet(host, path, params);
+    }
+  }
+
+
+  Future _requestForGet(String host, String path, Map<String, String> params) async {
+    try {
+      String url = "$host$path";
+
+      Response response;
+      Options option = Options(
+          method: "get",
+        responseType: ResponseType.json
+      );
+      response = await Dio().get(url, queryParameters: params, options: option);
+      print('request:' + response.request.uri.toString());
+      print('response:'+response.toString());
+
+      var res = response.data;
+      if(res is Map) {
+        return res;
+      }else {
+        Map result = {
+          'code' : 0,
+          'data' : res
+        };
+        return result;
+      }
+
+    } on DioError catch (error) {
+      print(error);
+      Response errorResponse;
+      if (error.response != null) {
+        errorResponse = error.response;
+      } else {
+        errorResponse = new Response(statusCode: 500);
+      }
+      if (error.type == DioErrorType.CONNECT_TIMEOUT) {
+        errorResponse.statusCode = 501;
+      }
+      Map res = {"code": errorResponse.statusCode, "msg": "请求失败"};
+      return res;
+    }
+  }
+
+
+  Future _requestForPost(String host, String path, Map<String, String> params) async {
+    try {
+      String url = '$host$path';
+      if(params == null) {
+        params = Map();
+      }
+      print(params);
+      Response response;
+      Options options = Options(
+          method: 'post',
+          contentType: ('application/x-www-form-urlencoded')
+      );
+
+      Dio dio = Dio();
+      response = await dio.request(url, data: params, options: options);
+      var res = response.data;
+      if(res is Map) {
+        return res;
+      }else {
+        Map result = {
+          'data' : res
+        };
+        return result;
+      }
+    } on DioError catch (error) {
+      Response errorResponse;
+      if (error.response != null) {
+        errorResponse = error.response;
+      }else {
+        errorResponse = Response(statusCode: 500);
+      }
+      if(error.type == DioErrorType.CONNECT_TIMEOUT) {
+        errorResponse.statusCode = 501;
+      }
+      Map res = {"code": errorResponse.statusCode, "msg": "请求失败"};
+      return res;
+    }
+  }
+}
