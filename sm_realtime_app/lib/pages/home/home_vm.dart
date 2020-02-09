@@ -10,6 +10,9 @@ class HomeVM {
   int page = 0;
 
   static Future initData() async{
+    DateTime now = new DateTime.now();
+    print("当前时间：$now");
+
     HttpModel result = await TXHttpRequest.httpRequest(HttpMethod.POST, ApiUri.TX_INFO, null);
     List<dynamic> list = List();
     if(result.newslist is List) {
@@ -23,10 +26,14 @@ class HomeVM {
       }
     }
 
+    now = new DateTime.now();
+    print("当前时间：$now");
     return list;
   }
   
   static Future initLabData() async {
+    DateTime now = new DateTime.now();
+    print("当前时间：$now");
     LABHttpModel result = await LABHttpRequest.httpRequest(HttpMethod.GET, ApiUri.LAB_NEWS , {'num':'all'});
     List<LabNewsModel> list = List();
     if(result.results != null) {
@@ -37,8 +44,6 @@ class HomeVM {
             length = 10;
           }
           for(int i= 0;i<length; i++) {
-            print(i);
-            print(newsList.length);
             Map item = newsList[i];
 
             LabNewsModel model = LabNewsModel.fromJson(item);
@@ -48,7 +53,8 @@ class HomeVM {
           _homeVM.allDatas = newsList;
         }
     }
-    print(list);
+    now = new DateTime.now();
+    print("当前时间：$now");
     _homeVM.currentDatas = list;
     _homeVM.page = 0;
     return list;

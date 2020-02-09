@@ -5,6 +5,9 @@ import 'package:sm_realtime_app/model/news_model.dart';
 import 'package:sm_realtime_app/widgets/news_card_widget.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+
+
 class HomePage extends StatelessWidget{
 
   RefreshController _refreshController = RefreshController(initialRefresh: true);
@@ -18,6 +21,7 @@ class HomePage extends StatelessWidget{
       builder: (BuildContext context, AsyncSnapshot<List>snapshot) {
         _refreshController.refreshCompleted();
         _refreshController.loadComplete();
+
         return Container(
           padding: EdgeInsets.only(top: 10),
           child: SmartRefresher(
@@ -26,7 +30,7 @@ class HomePage extends StatelessWidget{
             controller: _refreshController,
             header: WaterDropHeader(complete: Container(
               height: 55.0,
-              child: Center(child:Text('加载完成')),
+              child: Container(),
             ),),
             footer: CustomFooter(builder: (BuildContext context,  LoadStatus mode) {
               Widget body;
@@ -48,15 +52,36 @@ class HomePage extends StatelessWidget{
             onLoading: (){
               bloc.loadMoreData();
             },
-            child: ListView.builder(itemBuilder: (c, i) {
-              return _renderRow(snapshot.data, i);
-            },
-              itemCount: snapshot.data == null ? 0: snapshot.data.length,
-            ),
+            child: _buildContent(snapshot),
 
           ),
         );
       },
+    );
+  }
+
+  Widget _buildContent(AsyncSnapshot snapshot) {
+    if(snapshot.connectionState == ConnectionState.waiting) {
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    return ListView.builder(itemBuilder: (c, i) {
+      return AnimationConfiguration.staggeredList(
+        position: i,
+        duration: const Duration(milliseconds: 375),
+        child: SlideAnimation(
+          verticalOffset: 50.0,
+          child: FadeInAnimation(
+            child: _renderRow(snapshot.data, i),
+          ),
+        ),
+      );
+//      return _renderRow(snapshot.data, i);
+    },
+      itemCount: snapshot.data == null ? 0: snapshot.data.length,
     );
   }
 

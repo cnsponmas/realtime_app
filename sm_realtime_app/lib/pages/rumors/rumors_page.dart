@@ -4,6 +4,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sm_realtime_app/model/rumor_model.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+
 
 class RumorsPage extends StatelessWidget {
   RefreshController _refreshController = RefreshController(initialRefresh: true);
@@ -35,18 +37,42 @@ class RumorsPage extends StatelessWidget {
               dataBLoC.loadMore();
             },
 
-            child: ListView.builder(
-                itemBuilder: (c, i) {
-              RumorModel model = datas[i];
-              return _buildCell(model, c);
-            },
-              itemCount: datas.length,
-            ),
+            child: _buildContent(snapshot)
           ),
         );
       },
     );
   }
+
+  Widget _buildContent(AsyncSnapshot snapshot) {
+    List datas = List();
+    if(snapshot.data != null) {
+      datas = snapshot.data['rumors_data'];
+    }
+    if(snapshot.connectionState == ConnectionState.waiting) {
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    return ListView.builder(itemBuilder: (c, i) {
+      RumorModel model = datas[i];
+      return AnimationConfiguration.staggeredList(
+        position: i,
+        duration: const Duration(milliseconds: 375),
+        child: SlideAnimation(
+          verticalOffset: 50.0,
+          child: FadeInAnimation(
+            child: _buildCell(model,c),
+          ),
+        ),
+      );
+    },
+      itemCount: datas.length,
+    );
+  }
+
 
   Widget _buildCell(RumorModel item, BuildContext context) {
     if(item.imgsrc.startsWith('//')){

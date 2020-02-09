@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'dart:io';
 import 'api_uri.dart';
 import 'package:sm_realtime_app/model/http_model.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 enum HttpMethod {
   POST,
   GET,
@@ -25,7 +26,8 @@ class HttpRequest {
 
       Response response;
       Options option = Options(method: "get");
-      response = await Dio().get(url, queryParameters: params, options: option);
+      Dio dio = Dio();
+      response = await dio.get(url, queryParameters: params, options: option);
       print('response:'+response.toString());
       Map res = json.decode(response.toString());
     } on DioError catch (error) {
@@ -92,7 +94,8 @@ class TXHttpRequest {
 
       Response response;
       Options option = Options(method: "get");
-      response = await Dio().get(url, queryParameters: params, options: option);
+      Dio dio = Dio();
+      response = await dio.get(url, queryParameters: params, options: option);
       print('response:'+response.toString());
       Map res = json.decode(response.toString());
       LABHttpModel model = LABHttpModel.fromJson(res);
@@ -168,7 +171,8 @@ class LABHttpRequest {
 
       Response response;
       Options option = Options(method: "get");
-      response = await Dio().get(url, queryParameters: params, options: option);
+      Dio dio = Dio();
+      response = await dio.get(url, queryParameters: params, options: option);
       print('request:' + response.request.uri.toString());
       print('response:'+response.toString());
 
@@ -249,7 +253,8 @@ class BaseRequest {
           method: "get",
         responseType: ResponseType.json
       );
-      response = await Dio().get(url, queryParameters: params, options: option);
+      Dio dio = Dio();
+      response = await dio.get(url, queryParameters: params, options: option);
       print('request:' + response.request.uri.toString());
       print('response:'+response.toString());
 
@@ -291,7 +296,7 @@ class BaseRequest {
       Response response;
       Options options = Options(
           method: 'post',
-          contentType: ('application/x-www-form-urlencoded')
+//          contentType: ('application/x-www-form-urlencoded')
       );
 
       Dio dio = Dio();

@@ -4,6 +4,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sm_realtime_app/model/wiki_model.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+
 
 class WikiView extends StatelessWidget {
   RefreshController _refreshController = RefreshController(initialRefresh: true);
@@ -24,7 +26,7 @@ class WikiView extends StatelessWidget {
             onRefresh: () {
               bloc.initData();
             },
-            child: _buildWikiWidget(data,context),
+            child: _buildContent(snapshot),
           );
         });
   }
@@ -42,6 +44,37 @@ class WikiView extends StatelessWidget {
       itemCount: recomendData.length,
     );
   }
+
+  Widget _buildContent(AsyncSnapshot snapshot) {
+    if(snapshot.data == null || snapshot.data['wiki_data'] == null) {
+      return Container();
+    }
+    List recomendData = snapshot.data['wiki_data'] ;
+
+    if(snapshot.connectionState == ConnectionState.waiting) {
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    return ListView.builder(itemBuilder: (c, i) {
+      var model = recomendData[i];
+      return AnimationConfiguration.staggeredList(
+        position: i,
+        duration: const Duration(milliseconds: 375),
+        child: SlideAnimation(
+          verticalOffset: 50.0,
+          child: FadeInAnimation(
+            child: _buildCell(model,c),
+          ),
+        ),
+      );
+    },
+      itemCount: recomendData.length,
+    );
+  }
+
 
   _buildCell(WikiModel model,BuildContext context) {
     return GestureDetector(

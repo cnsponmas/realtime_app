@@ -8,6 +8,8 @@ import 'package:sm_realtime_app/model/overall_model.dart';
 import 'package:common_utils/common_utils.dart';
 import 'area_widget.dart';
 import 'overseas_widget.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+
 
 class DataPage extends StatelessWidget {
   RefreshController _refreshController = RefreshController(initialRefresh: true);
@@ -30,20 +32,61 @@ class DataPage extends StatelessWidget {
             onRefresh: () {
               dataBLoC.initData();
             },
-              child: ListView(
-                children: <Widget>[
-                  _buildHeader(snapshot.data),
-                  _buildMap(data),
-                  _buildChart(data, '全国确诊和疑似趋势图', SMChartType.data),
-                  _buildChart(data, '全国治愈和死亡趋势图', SMChartType.out),
-                  AreaWidget(data: data),
-                  OverSeasWidget(data: data,),
-                ],
-              ),
+              child: _buildContent(snapshot),
           ),
         );
       },
     );
+  }
+
+  Widget _buildContent(AsyncSnapshot snapshot) {
+    if(snapshot.connectionState == ConnectionState.waiting) {
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    return ListView.builder(itemBuilder: (c, i) {
+      return AnimationConfiguration.staggeredList(
+        position: i,
+        duration: const Duration(milliseconds: 375),
+        child: SlideAnimation(
+          verticalOffset: 50.0,
+          child: FadeInAnimation(
+            child: _buildItem(snapshot.data,i),
+          ),
+        ),
+      );
+//      return _renderRow(snapshot.data, i);
+    },
+      itemCount: 6,
+    );
+  }
+
+  Widget _buildItem(Map data, int index) {
+    switch (index) {
+      case 0:
+        return _buildHeader(data);
+        break;
+      case 1:
+        return _buildMap(data);
+        break;
+      case 2:
+        return _buildChart(data, '全国确诊和疑似趋势图', SMChartType.data);
+        break;
+      case 3:
+        return _buildChart(data, '全国治愈和死亡趋势图', SMChartType.out);
+        break;
+      case 4:
+        return AreaWidget(data: data);
+        break;
+      case 5:
+        return OverSeasWidget(data: data,);
+        break;
+    }
+    return Container();
+
   }
 
   Widget _buildMap(Map data) {

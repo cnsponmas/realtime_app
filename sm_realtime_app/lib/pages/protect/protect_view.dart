@@ -4,6 +4,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sm_realtime_app/model/recommend_model.dart';
 
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+
+
 class ProtectView extends StatelessWidget {
   RefreshController _refreshController = RefreshController(initialRefresh: true);
   @override
@@ -22,21 +25,37 @@ class ProtectView extends StatelessWidget {
         onRefresh: () {
           bloc.initData();
         },
-        child: _buildRecomendWidget(data),
+        child: _buildContent(snapshot),
       );
     });
   }
 
-  _buildRecomendWidget(Map data) {
-    if(data == null || data['recomend_data'] == null) {
+  Widget _buildContent(AsyncSnapshot snapshot) {
+    if(snapshot.data == null || snapshot.data['recomend_data'] == null) {
       return Container();
     }
-    List recomendData = data['recomend_data'] ;
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        var model = recomendData[index];
-        return _buildCell(model,context);
-      },
+    List recomendData = snapshot.data['recomend_data'] ;
+
+    if(snapshot.connectionState == ConnectionState.waiting) {
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    return ListView.builder(itemBuilder: (c, i) {
+      var model = recomendData[i];
+      return AnimationConfiguration.staggeredList(
+        position: i,
+        duration: const Duration(milliseconds: 375),
+        child: SlideAnimation(
+          verticalOffset: 50.0,
+          child: FadeInAnimation(
+            child: _buildCell(model,c),
+          ),
+        ),
+      );
+    },
       itemCount: recomendData.length,
     );
   }

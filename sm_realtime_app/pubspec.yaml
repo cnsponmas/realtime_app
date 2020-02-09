@@ -35,7 +35,8 @@ dependencies:
   cached_network_image: any
   flutter_webview_plugin: ^0.3.0
   flutter_spinkit: ^4.1.1+1
-
+  dio_http_cache: ^0.2.5
+  flutter_staggered_animations: ^0.1.2
 
 
 dev_dependencies:
