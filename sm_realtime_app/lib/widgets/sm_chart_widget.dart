@@ -20,7 +20,9 @@ class SMChartWidget extends StatelessWidget {
       color:Colors.white,
       child: SfCartesianChart(
         plotAreaBorderWidth: 0,
-        legend: Legend(isVisible: true),
+        legend:  Legend(
+            isVisible: true,
+            position: LegendPosition.bottom),
         primaryXAxis: CategoryAxis(
             majorGridLines: MajorGridLines(width: 0),
             labelPlacement: LabelPlacement.onTicks),
@@ -133,7 +135,6 @@ class SMChartWidget extends StatelessWidget {
     });
     return chartDatas;
   }
-
   buildSeries(SMChartType type, List datas) {
 
     List<ChartSeries<ChartDataModel, String>> list = List();
